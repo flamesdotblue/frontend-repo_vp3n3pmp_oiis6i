@@ -1,28 +1,43 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
+import ProfileHeader from './components/ProfileHeader.jsx';
+import AccountDetailsForm from './components/AccountDetailsForm.jsx';
+import PreferencesPanel from './components/PreferencesPanel.jsx';
+import SecuritySection from './components/SecuritySection.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [profile, setProfile] = useState({
+    fullName: 'Taylor Student',
+    email: 'taylor@student.edu',
+    phone: '',
+    university: 'Lakeside University',
+  });
+
+  const [prefs, setPrefs] = useState({});
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-5xl px-4 py-10">
+        <ProfileHeader name={profile.fullName} email={profile.email} />
+
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 grid gap-6">
+            <AccountDetailsForm
+              initial={profile}
+              onSave={(data) => setProfile((prev) => ({ ...prev, ...data }))}
+            />
+            <SecuritySection />
+          </div>
+          <div className="lg:col-span-1">
+            <PreferencesPanel initial={prefs} onChange={setPrefs} />
+          </div>
         </div>
+
+        <footer className="mt-10 text-center text-xs text-gray-500">
+          Your changes are stored locally for this demo.
+        </footer>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
